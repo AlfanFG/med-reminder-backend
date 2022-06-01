@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "@ladjs/graceful": "^2.0.1",
+    "bree": "^8.0.3",
+    "cabin": "^9.1.2",
+    "cors": "^2.8.5",
+    "cron": "^2.0.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "expressjs.routes.autoload": "^0.2.0",
+    "graceful": "^1.0.2",
+    "mongoose": "^6.3.1",
+    "nodemailer": "^6.7.5",
+    "signale": "^1.4.0"
+  }
+}
