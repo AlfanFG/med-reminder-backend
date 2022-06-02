@@ -78,6 +78,7 @@ let transporter = nodeMailer.createTransport({
             "reminder time",
             moment(item.time, "HH:mm").tz("asia/jakarta").format("HH:mm")
           );
+          console.log("time in db", item.time);
           console.log(
             "==========================================================="
           );
