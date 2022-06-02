@@ -36,9 +36,9 @@ const bree = new Bree({
   ],
 });
 
-// // handle graceful reloads, pm2 support, and events like SIGHUP, SIGINT, etc.
-// const graceful = new Graceful({ brees: [bree] });
-// graceful.listen();
+// handle graceful reloads, pm2 support, and events like SIGHUP, SIGINT, etc.
+const graceful = new Graceful({ brees: [bree] });
+graceful.listen();
 
 bree.start();
 
