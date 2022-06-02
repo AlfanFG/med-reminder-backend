@@ -39,7 +39,7 @@ let transporter = nodeMailer.createTransport({
 (async () => {
   await mongoose.connect(process.env.MONGOURI);
   const jobs = await jobScheduler.find({ isActive: true }).exec();
-  let i = 0;
+  console.log(jobs);
   await Promise.all(
     jobs.map(async (job) => {
       if (isCancelled) return;
