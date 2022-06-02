@@ -1,4 +1,4 @@
-const dotenv = require("dotenv").config();
+require("dotenv").config();
 const mongoose = require("mongoose");
 const { workerData } = require("worker_threads");
 const { parentPort } = require("worker_threads");
@@ -37,7 +37,7 @@ let transporter = nodeMailer.createTransport({
   },
 });
 (async () => {
-  await mongoose.connect(dotenv.parsed.MONGOURI);
+  await mongoose.connect(process.env.MONGOURI);
   const jobs = await jobScheduler.find({ isActive: true }).exec();
   let i = 0;
   await Promise.all(
