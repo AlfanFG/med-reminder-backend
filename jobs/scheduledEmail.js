@@ -20,10 +20,10 @@ const cabin = new Cabin({
 let isCancelled = false;
 
 // handle cancellation (this is a very simple example)
-if (parentPort)
-  parentPort.once("message", (message) => {
-    if (message === "cancel") isCancelled = true;
-  });
+// if (parentPort)
+//   parentPort.once("message", (message) => {
+//     if (message === "cancel") isCancelled = true;
+//   });
 
 //Transporter configuration
 let transporter = nodeMailer.createTransport({
@@ -42,8 +42,7 @@ let transporter = nodeMailer.createTransport({
 
   await Promise.all(
     jobs.map(async (job) => {
-      console.log(isCancelled);
-      if (isCancelled) return;
+      // if (isCancelled) return;
 
       const promises = job.schedule.map(async (item) => {
         try {
@@ -71,14 +70,14 @@ let transporter = nodeMailer.createTransport({
           console.log(
             "==========================================================="
           );
-          console.log(
-            "time now",
-            moment(new Date()).tz("asia/jakarta").format("HH:mm")
-          );
-          console.log(
-            "reminder time",
-            moment(item.time, "HH:mm").tz("asia/jakarta").format("HH:mm")
-          );
+          // console.log(
+          //   "time now",
+          //   moment(new Date()).tz("asia/jakarta").format("HH:mm")
+          // );
+          // console.log(
+          //   "reminder time",
+          //   moment(item.time, "HH:mm").tz("asia/jakarta").format("HH:mm")
+          // );
           console.log("time in db", item.time);
           console.log(
             "==========================================================="
@@ -117,6 +116,6 @@ let transporter = nodeMailer.createTransport({
       return Promise.all(promises);
     })
   );
-  if (parentPort) parentPort.postMessage("done");
-  else process.exit(0);
+  // if (parentPort) parentPort.postMessage("done");
+  // else process.exit(0);
 })();
