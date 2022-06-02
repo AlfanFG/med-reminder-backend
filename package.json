@@ -1,4 +1,10 @@
 {
+  "name": "node-example",
+  "version": "1.0.0",
+  "description": "medreminder inapp, email & whatsapp",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
   "dependencies": {
     "@ladjs/graceful": "^2.0.1",
     "bree": "^8.0.3",
@@ -9,8 +15,13 @@
     "express": "^4.18.1",
     "expressjs.routes.autoload": "^0.2.0",
     "graceful": "^1.0.2",
+    "moment": "^2.29.3",
+    "moment-timezone": "^0.5.34",
     "mongoose": "^6.3.1",
     "nodemailer": "^6.7.5",
     "signale": "^1.4.0"
+  },
+  "engines": {
+    "node": "16.3.0"
   }
 }

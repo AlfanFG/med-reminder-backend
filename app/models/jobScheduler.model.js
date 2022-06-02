@@ -13,6 +13,14 @@ module.exports = (mongoose) => {
         type: Date,
         required: false,
       },
+      isActive: {
+        type: Boolean,
+        required: false,
+      },
+      executed: {
+        type: Boolean,
+        required: false,
+      },
       schedule: [
         {
           time: {

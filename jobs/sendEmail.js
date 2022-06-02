@@ -1,10 +1,15 @@
 require("dotenv").config();
+const mongoose = require("mongoose");
 const { workerData } = require("worker_threads");
 const nodeMailer = require("nodemailer");
-
+const jobScheduler = require("../app/models/jobScheduler.model")(mongoose);
+const User = require("../app/models/user.model")(mongoose);
 async function main() {
-  console.log(workerData.description);
-  console.log(process.env.EMAIL);
+  await mongoose.connect(
+    "mongodb+srv://alfan:heathcliff123@cluster0.xzqwb.mongodb.net/med_reminder?retryWrites=true&w=majority"
+    // { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }
+  );
+
   //Transporter configuration
   let transporter = nodeMailer.createTransport({
     host: "smtp.gmail.com",
@@ -18,6 +23,7 @@ async function main() {
   });
 
   //Email configuration
+  console.log("testing!");
   await transporter.sendMail({
     from: "alfanfgifary18@if.unjani.ac.id", //SENDER
     to: "alfanfaturahman10@gmail.com, alfansafutra@gmail.com", //MULTIPLE RECEIVERS

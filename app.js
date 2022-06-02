@@ -26,23 +26,23 @@ const bree = new Bree({
   jobs: [
     {
       name: "scheduledEmail",
-      interval: "10s",
-      worker: {
-        workerData: {
-          description: "This job will send emails.",
-        },
-      },
+      interval: "1m",
+      // worker: {
+      //   workerData: {
+      //     description: "This job will send emails.",
+      //   },
+      // },
     },
   ],
 });
 
-// handle graceful reloads, pm2 support, and events like SIGHUP, SIGINT, etc.
-const graceful = new Graceful({ brees: [bree] });
-graceful.listen();
+// // handle graceful reloads, pm2 support, and events like SIGHUP, SIGINT, etc.
+// const graceful = new Graceful({ brees: [bree] });
+// graceful.listen();
 
 bree.start();
 
-const port = 8000;
+const port = process.env.PORT || 8000;
 app.listen(port, () => [
   console.log(`Mongo Contact App | Listening at http://localhost:${port}`),
 ]);
