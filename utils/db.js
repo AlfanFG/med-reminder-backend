@@ -1,3 +1,3 @@
-require("dotenv").config();
+const dotenv = require("dotenv").config();
 const mongoose = require("mongoose");
-mongoose.connect(process.env.MONGOURI);
+mongoose.connect(dotenv.parsed.MONGOURI);
