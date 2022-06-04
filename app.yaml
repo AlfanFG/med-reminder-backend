@@ -1,4 +1,4 @@
-runtime: nodejs12.11.1
+runtime: nodejs
 
 env_variables:
   MONGOURI: "mongodb+srv://alfan:heathcliff123@cluster0.xzqwb.mongodb.net/med_reminder?retryWrites=true&w=majority"
