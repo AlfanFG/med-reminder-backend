@@ -26,7 +26,8 @@
     "mongoose": "^6.3.1",
     "nodemailer": "^6.7.5",
     "nodemon": "^2.0.16",
-    "signale": "^1.4.0"
+    "signale": "^1.4.0",
+    "twilio": "^3.77.2"
   },
   "engines": {
     "node": "16"
