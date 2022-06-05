@@ -87,7 +87,7 @@ let transporter = nodeMailer.createTransport({
               moment(item.time, "HH:mm").tz("asia/jakarta").format("HH:mm") &&
             isExecuted
           ) {
-            console.log("It is not time yet to post tweet");
+            console.log("It is not time yet to send email");
             // console.log(moment(new Date()).format("YYYY-MM-DD HH:mm"));
 
             // return;

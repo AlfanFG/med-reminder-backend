@@ -4,4 +4,6 @@ env_variables:
   MONGOURI: "mongodb+srv://alfan:heathcliff123@cluster0.xzqwb.mongodb.net/med_reminder?retryWrites=true&w=majority"
   PASSWORD: "aethelwolf"
   EMAIL: "alfanfgifary18@if.unjani.ac.id"
-  PORT:8080
+  TWILIO_SID_ACCOUNT: "AC2de8eb8bf3764bdde8549c6dbf472244"
+  TWILIO_AUTH_TOKEN: "22fbb21bf3f1fc318fe1dec0f575c33d"
+  PORT: 8080

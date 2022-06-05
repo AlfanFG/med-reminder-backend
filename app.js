@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.send("Hello World!!!!!!!!!!!!!!!!!!!!");
+  res.send("Server is running...");
 });
 
 require("./app/routes/post.routes")(app);
@@ -44,7 +44,7 @@ graceful.listen();
 
 bree.start();
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8080;
 app.listen(port, () => [
   console.log(`Mongo Contact App | Listening at http://localhost:${port}`),
 ]);
