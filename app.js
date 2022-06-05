@@ -11,7 +11,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {});
+app.get("/", (req, res) => {
+  res.send("Hello World!!!!!!!!!!!!!!!!!!!!");
+});
 
 require("./app/routes/post.routes")(app);
 require("./app/routes/jobScheduler.routes")(app);
