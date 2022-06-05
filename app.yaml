@@ -4,3 +4,4 @@ env_variables:
   MONGOURI: "mongodb+srv://alfan:heathcliff123@cluster0.xzqwb.mongodb.net/med_reminder?retryWrites=true&w=majority"
   PASSWORD: "aethelwolf"
   EMAIL: "alfanfgifary18@if.unjani.ac.id"
+  PORT:8080
