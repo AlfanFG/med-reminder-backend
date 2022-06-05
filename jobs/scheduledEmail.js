@@ -83,7 +83,7 @@ let transporter = nodeMailer.createTransport({
             "==========================================================="
           );
           if (
-            moment(new Date()).format("HH:mm") !==
+            moment(new Date(), "HH:mm").tz("asia/jakarta").format("HH:mm") !==
               moment(item.time, "HH:mm").tz("asia/jakarta").format("HH:mm") &&
             isExecuted
           ) {
