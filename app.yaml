@@ -5,5 +5,5 @@ env_variables:
   PASSWORD: "aethelwolf"
   EMAIL: "alfanfgifary18@if.unjani.ac.id"
   TWILIO_SID_ACCOUNT: "AC2de8eb8bf3764bdde8549c6dbf472244"
-  TWILIO_AUTH_TOKEN: "22fbb21bf3f1fc318fe1dec0f575c33d"
+  TWILIO_AUTH_TOKEN: "0162ad01ae280df70f05fcc3e16511be"
   PORT: 8080
