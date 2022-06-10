@@ -16,8 +16,6 @@ const client = new Client({
   authStrategy: new LocalAuth(),
   puppeteer: {
     headless: true,
-    args: ["--use-gl=egl"],
-    executablePath: "/usr/bin/chromium-browser",
   },
 });
 
