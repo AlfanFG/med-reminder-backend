@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const client = new Client({
   authStrategy: new LocalAuth(),
-  puppeteer: { headless: true },
+  puppeteer: { headless: true, args: ["--use-gl=egl"] },
 });
 
 app.get("/", (req, res) => {
