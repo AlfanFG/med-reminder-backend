@@ -87,14 +87,11 @@ if (parentPort)
               const number = user.phone_number;
               const message = "noreply message";
               const body = { number: number, message: message };
-              const response = await fetch(
-                "https://b28f-116-206-15-21.ngrok.io/send-message",
-                {
-                  method: "post",
-                  body: JSON.stringify(body),
-                  headers: { "Content-Type": "application/json" },
-                }
-              );
+              const response = await fetch("http://34.101.83.49/send-message", {
+                method: "post",
+                body: JSON.stringify(body),
+                headers: { "Content-Type": "application/json" },
+              });
 
               const data = await response.json();
             } catch (e) {
