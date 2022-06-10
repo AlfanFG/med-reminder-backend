@@ -21,6 +21,15 @@ module.exports = (mongoose) => {
         type: Boolean,
         required: false,
       },
+      durationType: {
+        type: String,
+        required: false,
+      },
+      numberOfDays: {
+        type: Number,
+        required: false,
+        default: 0,
+      },
       schedule: [
         {
           time: {

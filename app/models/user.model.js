@@ -6,7 +6,19 @@ module.exports = (mongoose) => {
         required: false,
       },
       email: {
-        type: Number,
+        type: String,
+        required: false,
+      },
+      phone_number: {
+        type: String,
+        required: false,
+      },
+      password: {
+        type: String,
+        required: false,
+      },
+      uuid: {
+        type: String,
         required: false,
       },
     },

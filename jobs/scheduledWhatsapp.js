@@ -1,13 +1,12 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-const { workerData } = require("worker_threads");
 const { parentPort } = require("worker_threads");
 const jobScheduler = require("../app/models/jobScheduler.model")(mongoose);
 const User = require("../app/models/user.model")(mongoose);
-const nodeMailer = require("nodemailer");
 const moment = require("moment-timezone");
 const Cabin = require("cabin");
 const { Signale } = require("signale");
+const fetch = require("node-fetch");
 
 // initialize cabin
 const cabin = new Cabin({
@@ -25,24 +24,15 @@ if (parentPort)
     if (message === "cancel") isCancelled = true;
   });
 
-//Transporter configuration
-let transporter = nodeMailer.createTransport({
-  host: "smtp.gmail.com",
-  service: "gmail",
-  port: 465,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL, //REPLACE WITH YOUR EMAIL ADDRESS
-    pass: process.env.PASSWORD, //REPLACE WITH YOUR EMAIL PASSWORD
-  },
-});
 (async () => {
   await mongoose.connect(process.env.MONGOURI);
   const jobs = await jobScheduler.find({ isActive: true }).exec();
+
   await Promise.all(
     jobs.map(async (job) => {
       if (isCancelled) return;
       const user = await User.findOne({ _id: job.user_id }).exec();
+
       const promises = job.schedule.map(async (item) => {
         try {
           let isExecuted = job.executed;
@@ -77,7 +67,7 @@ let transporter = nodeMailer.createTransport({
             "reminder time",
             moment(item.time, "HH:mm").tz("asia/jakarta").format("HH:mm")
           );
-
+          console.log("time in db", item.time);
           console.log(
             "==========================================================="
           );
@@ -86,24 +76,27 @@ let transporter = nodeMailer.createTransport({
               moment(item.time, "HH:mm").tz("asia/jakarta").format("HH:mm") &&
             isExecuted
           ) {
-            console.log("It is not time yet to send email");
+            console.log("It is not time yet to send whatsapp");
             // console.log(moment(new Date()).format("YYYY-MM-DD HH:mm"));
 
             // return;
           } else {
             try {
               //Email configuration
-              console.log("send email!");
-              await transporter.sendMail({
-                from: process.env.EMAIL, //SENDER
-                to: user.email, //MULTIPLE RECEIVERS
-                subject: "Hello", //EMAIL SUBJECT
-                text: "This is a test email.", //EMAIL BODY IN TEXT FORMAT
-                html: "<b>This is a test email.</b>", //EMAIL BODY IN HTML FORMAT
-              });
-              // await jobScheduler
-              //   .findOneAndUpdate({ _id: job._id }, { isActive: false })
-              //   .exec();
+              console.log("send whatsapp!");
+              const number = user.phone_number;
+              const message = "noreply message";
+              const body = { number: number, message: message };
+              const response = await fetch(
+                "https://b28f-116-206-15-21.ngrok.io/send-message",
+                {
+                  method: "post",
+                  body: JSON.stringify(body),
+                  headers: { "Content-Type": "application/json" },
+                }
+              );
+
+              const data = await response.json();
             } catch (e) {
               cabin.error(e);
             }
