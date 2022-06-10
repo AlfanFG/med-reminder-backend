@@ -14,7 +14,11 @@ app.use(express.urlencoded({ extended: true }));
 
 const client = new Client({
   authStrategy: new LocalAuth(),
-  puppeteer: { headless: true, args: ["--use-gl=egl"] },
+  puppeteer: {
+    headless: true,
+    args: ["--use-gl=egl"],
+    executablePath: "/usr/bin/chromium-browser",
+  },
 });
 
 app.get("/", (req, res) => {
