@@ -12,63 +12,63 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const client = new Client({
-  authStrategy: new LocalAuth(),
-  puppeteer: {
-    headless: true,
-  },
-});
+// const client = new Client({
+//   authStrategy: new LocalAuth(),
+//   puppeteer: {
+//     headless: true,
+//   },
+// });
 
 app.get("/", (req, res) => {
   res.send("Server is running...");
 });
 
-app.post("/send-message", (req, res) => {
-  const number = req.body.number;
-  const message = req.body.message;
-  client
-    .sendMessage(number, message)
-    .then((response) => {
-      res.status(200).json({
-        status: true,
-        response: response,
-      });
-    })
-    .catch((err) => {
-      res.status(500).json({
-        status: false,
-        response: err,
-      });
-    });
-});
+// app.post("/send-message", (req, res) => {
+//   const number = req.body.number;
+//   const message = req.body.message;
+//   client
+//     .sendMessage(number, message)
+//     .then((response) => {
+//       res.status(200).json({
+//         status: true,
+//         response: response,
+//       });
+//     })
+//     .catch((err) => {
+//       res.status(500).json({
+//         status: false,
+//         response: err,
+//       });
+//     });
+// });
 
-client.on("qr", (qr) => {
-  // Generate and scan this code with your phone
-  console.log("QR RECEIVED", qr);
-  qrcode.generate(qr, { small: true });
-});
+// client.on("qr", (qr) => {
+//   // Generate and scan this code with your phone
+//   console.log("QR RECEIVED", qr);
+//   qrcode.generate(qr, { small: true });
+// });
 
-client.on("authenticated", () => {
-  console.log("AUTHENTICATED");
-});
+// client.on("authenticated", () => {
+//   console.log("AUTHENTICATED");
+// });
 
-client.on("auth_failure", (msg) => {
-  // Fired if session restore was unsuccessful
-  console.error("AUTHENTICATION FAILURE", msg);
-});
+// client.on("auth_failure", (msg) => {
+//   // Fired if session restore was unsuccessful
+//   console.error("AUTHENTICATION FAILURE", msg);
+// });
 
-client.on("ready", () => {
-  console.log("Client is ready!");
-});
+// client.on("ready", () => {
+//   console.log("Client is ready!");
+// });
 
-client.on("message", (msg) => {
-  if (msg.body == "!ping") {
-    console.log(msg.body);
-    msg.reply("pong");
-  }
-});
+// client.on("message", (msg) => {
+//   if (msg.body == "!ping") {
+//     console.log(msg.body);
+//     msg.reply("pong");
+//   }
+// });
 
-client.initialize();
+// client.initialize();
 
 //Twilio
 // app.post("/sendWhatsapp", async (req, res) => {
@@ -101,9 +101,13 @@ const bree = new Bree({
       interval: "1m",
     },
     {
-      name: "scheduledWhatsapp",
+      name: "untakenMedicine",
       interval: "1m",
     },
+    // {
+    //   name: "scheduledWhatsapp",
+    //   interval: "1m",
+    // },
   ],
 });
 

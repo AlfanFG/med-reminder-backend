@@ -40,6 +40,19 @@ module.exports = (mongoose) => {
             type: Number,
             required: false,
           },
+          isTaken: {
+            type: Boolean,
+            required: false,
+          },
+          reminderTimes: {
+            type: Number,
+            required: false,
+            default: 0,
+          },
+          isRepeated: {
+            type: Boolean,
+            required: false,
+          },
         },
       ],
     },
