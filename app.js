@@ -102,7 +102,7 @@ const bree = new Bree({
     },
     {
       name: "untakenMedicine",
-      interval: "1m",
+      interval: "5m",
     },
     // {
     //   name: "scheduledWhatsapp",
