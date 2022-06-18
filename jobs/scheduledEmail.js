@@ -97,7 +97,10 @@ let transporter = nodeMailer.createTransport({
               const body = {
                 email: user.email,
                 message: "this is noreply",
+                data: job.schedule,
+                name: user.name,
               };
+
               const response = await fetch("http://localhost:8080/send-email", {
                 method: "POST",
                 body: JSON.stringify(body),

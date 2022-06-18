@@ -12,6 +12,7 @@ const app = express();
 const handlebars = require("handlebars");
 const { readFileSync } = require("fs");
 const { resolve } = require("path");
+const moment = require("moment-timezone");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -44,16 +45,19 @@ const emailTemplateSource = readFileSync(
 );
 
 app.post("/send-email", (req, res) => {
-  const { email, message, data } = req.body;
+  const { email, message, data, name } = req.body;
   let temp = "";
   data.map((item) => {
-    temp += `<td valign='middle' style='text-align:left; padding: 0 2.5em;'>${item.takePill}</td>`;
+    const time = moment(item.time).tz("asia/jakarta").format("HH:mm");
+    temp += `<tr style="border-bottom: 1px solid rgba(0,0,0,.05);"><td valign='middle' style='text-align:left; padding: 0 2.5em;'>${item.medName}</td><td valign='middle' style='text-align:left; padding: 0 2.5em;'>${item.takePill}</td><td valign='middle' style='text-align:left; padding: 0 2.5em;'>${time}</td></tr>`;
   });
   console.log(temp);
   const emailHtml = handlebars.compile(emailTemplateSource)({
     data: temp,
     mesage: message,
+    name: name,
   });
+
   transporter
     .sendMail({
       from: process.env.EMAIL, //SENDER
