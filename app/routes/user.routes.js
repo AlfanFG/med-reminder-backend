@@ -60,9 +60,9 @@ module.exports = (app) => {
   router.put("/fcm", (req, res) => {
     const { fcm, _id } = req.body;
     console.log(req.body);
-    User.findOneAndUpdate({ _id: _id }, { fcm: fcm })
+    User.findOneAndUpdate({ _id: _id }, { fcm: fcm }, { new: true })
       .then((result) => {
-        res.send({ code: 200, message: "Update Success!" });
+        res.send({ code: 200, message: "Update Success!", data: result });
       })
       .catch((err) => {
         res.status(500).send({
