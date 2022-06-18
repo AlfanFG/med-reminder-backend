@@ -47,7 +47,7 @@ app.post("/send-email", (req, res) => {
   const { email, message, data } = req.body;
   console.log(req.body);
   const emailHtml = handlebars.compile(emailTemplateSource)({
-    data: data,
+    data: JSON.stringify(data),
   });
   transporter
     .sendMail({
