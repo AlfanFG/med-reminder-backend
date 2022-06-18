@@ -8,7 +8,6 @@ const moment = require("moment-timezone");
 const Cabin = require("cabin");
 const { Signale } = require("signale");
 const fetch = require("node-fetch");
-const notificationService = require("../helper-function/notificationService");
 const { ServiceAccount } = require("firebase-admin");
 const serviceAccount = require("../utils/fcm_credentials.json");
 const admin = require("firebase-admin");
@@ -94,7 +93,7 @@ const pushNotificationOne = (data, token) => {};
             // return;
           } else {
             try {
-              console.log("Send Notification");
+              console.log("Send Notification!");
 
               const fcm = user.fcm ? user.fcm : "";
               const message = {
