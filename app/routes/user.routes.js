@@ -56,5 +56,20 @@ module.exports = (app) => {
     });
   });
 
+  //update fcm user
+  router.put("/fcm", (req, res) => {
+    const { fcm, _id } = req.body;
+    console.log(req.body);
+    User.findOneAndUpdate({ _id: _id }, { fcm: fcm })
+      .then((result) => {
+        res.send({ code: 200, message: "Update Success!" });
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: err.message || "Some Error While retrieving data",
+        });
+      });
+  });
+
   app.use("/api/v1/user", router);
 };
