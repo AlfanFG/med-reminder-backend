@@ -47,7 +47,7 @@ app.post("/send-email", (req, res) => {
   const { email, message, data } = req.body;
   let temp = "";
   data.map((item) => {
-    temp.append(`<td>${item.takePill}</td>`);
+    temp += `<td>${item.takePill}</td>`;
   });
   const emailHtml = handlebars.compile(emailTemplateSource)({
     data: temp,
