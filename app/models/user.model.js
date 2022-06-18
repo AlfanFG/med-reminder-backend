@@ -17,7 +17,7 @@ module.exports = (mongoose) => {
         type: String,
         required: false,
       },
-      uuid: {
+      fcm: {
         type: String,
         required: false,
       },

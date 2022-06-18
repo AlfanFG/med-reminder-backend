@@ -7,7 +7,13 @@ const User = require("../app/models/user.model")(mongoose);
 const nodeMailer = require("nodemailer");
 const moment = require("moment-timezone");
 const Cabin = require("cabin");
+const fetch = require("node-fetch");
 const { Signale } = require("signale");
+const fs = require("fs");
+var ejs = require("ejs");
+const { readFileSync } = require("fs");
+const { resolve } = require("path");
+const handlebars = require("handlebars");
 
 // initialize cabin
 const cabin = new Cabin({
@@ -70,43 +76,72 @@ let transporter = nodeMailer.createTransport({
 
           const timeNow = moment(new Date()).tz("asia/jakarta");
           const intakeTime = moment(item.time).tz("asia/jakarta");
-          const isFifteenMin = timeNow.minutes() - intakeTime.minutes() >= 15;
           const isTaken = item.isTaken;
-          const repeatedTimes = item.repeatedTimes;
+          let repeatedTimes = item.repeatedTimes;
           const isRepeated = item.isRepeated;
+          let delay = 0;
+          if (repeatedTimes === 1) {
+            delay = 15;
+          } else if (repeatedTimes === 2) {
+            delay = 30;
+          } else {
+            delay = 45;
+          }
+          const isFifteenMin = timeNow.diff(intakeTime, "minutes") >= delay;
+          console.log(
+            `time now = ${timeNow.minutes()} | intake time = ${intakeTime.minutes()} | ${isFifteenMin}`
+          );
+
+          console.log(item);
+          console.log(isFifteenMin && !isTaken && repeatedTimes <= 3);
           if (timeNow > intakeTime) {
-            if (isFifteenMin && !isTaken && repeatedTimes <= 3 && isRepeated) {
-              //Email configuration
+            if (isFifteenMin && !isTaken && repeatedTimes < 3) {
+              //   //Email configuration
               console.log("Send Email!");
+              const emailTemplateSource = readFileSync(
+                resolve(__dirname, "../email_temp/medicines.hbs"),
+                "utf8"
+              );
+
+              const emailHtml = handlebars.compile(emailTemplateSource)(
+                {
+                  takePill: item.takePill,
+                }
+                // {
+                //   allowedProtoMethods: true,
+                // }
+              );
+
               await transporter.sendMail({
                 from: process.env.EMAIL, //SENDER
                 to: user.email, //MULTIPLE RECEIVERS
                 subject: "Hello! i think you are forgetting something", //EMAIL SUBJECT
                 text: "Have you taken your medicines?", //EMAIL BODY IN TEXT FORMAT
-                html: "<b>Have you taken your medicines?</b>", //EMAIL BODY IN HTML FORMAT
+                html: emailHtml, //EMAIL BODY IN HTML FORMAT
               });
 
-              const number = user.phone_number;
-              const message = "noreply message";
-              const body = { number: number, message: message };
-              await fetch("http://34.101.83.49/send-message", {
-                method: "post",
-                body: JSON.stringify(body),
-                headers: { "Content-Type": "application/json" },
-              })
-                .then((result) => {
-                  console.log("Send Whatsapp Successfull!");
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
+              //   const number = user.phone_number;
+              //   const message = "noreply message";
+              //   const body = { number: number, message: message };
+              //   await fetch("http://34.101.83.49/send-message", {
+              //     method: "post",
+              //     body: JSON.stringify(body),
+              //     headers: { "Content-Type": "application/json" },
+              //   })
+              //     .then((result) => {
+              //       console.log("Send Whatsapp Successfull!");
+              //     })
+              //     .catch((err) => {
+              //       console.log(err);
+              //     });
+              console.log("item id : ", item._id);
 
               await jobScheduler
                 .findOneAndUpdate(
                   { _id: job._id, "schedule._id": item._id },
                   {
                     $set: {
-                      "schedule.$.repeatedTimes": repeatedTimes++,
+                      "schedule.$.repeatedTimes": (repeatedTimes += 1),
                       "schedule.$.isRepeated": true,
                     },
                   },

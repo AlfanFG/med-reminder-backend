@@ -4,11 +4,21 @@ const { workerData } = require("worker_threads");
 const { parentPort } = require("worker_threads");
 const jobScheduler = require("../app/models/jobScheduler.model")(mongoose);
 const User = require("../app/models/user.model")(mongoose);
-const nodeMailer = require("nodemailer");
 const moment = require("moment-timezone");
 const Cabin = require("cabin");
 const { Signale } = require("signale");
 const fetch = require("node-fetch");
+const notificationService = require("../helper-function/notificationService");
+const { ServiceAccount } = require("firebase-admin");
+const serviceAccount = require("../utils/fcm_credentials.json");
+const admin = require("firebase-admin");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL:
+    "https://medreminder-2e833-default-rtdb.asia-southeast1.firebasedatabase.app",
+});
+
 // initialize cabin
 const cabin = new Cabin({
   axe: {
@@ -25,17 +35,8 @@ if (parentPort)
     if (message === "cancel") isCancelled = true;
   });
 
-//Transporter configuration
-let transporter = nodeMailer.createTransport({
-  host: "smtp.gmail.com",
-  service: "gmail",
-  port: 465,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL, //REPLACE WITH YOUR EMAIL ADDRESS
-    pass: process.env.PASSWORD, //REPLACE WITH YOUR EMAIL PASSWORD
-  },
-});
+const pushNotificationOne = (data, token) => {};
+
 (async () => {
   await mongoose.connect(process.env.MONGOURI);
   const jobs = await jobScheduler.find({ isActive: true }).exec();
@@ -43,6 +44,7 @@ let transporter = nodeMailer.createTransport({
     jobs.map(async (job) => {
       if (isCancelled) return;
       const user = await User.findOne({ _id: job.user_id }).exec();
+
       const promises = job.schedule.map(async (item) => {
         try {
           let isExecuted = job.executed;
@@ -92,19 +94,28 @@ let transporter = nodeMailer.createTransport({
             // return;
           } else {
             try {
-              //Email configuration
-              console.log("send email!");
-              const body = {
-                email: user.email,
-                message: "this is noreply",
+              console.log("Send Notification");
+
+              const fcm = user.fcm ? user.fcm : "";
+              const message = {
+                tokens: [fcm],
+                notification: {
+                  title: "Take your medicine!",
+                  body: "Tap this for detail",
+                },
+                data: { data: JSON.stringify(item) },
               };
-              const response = await fetch("http://localhost:8080/send-email", {
-                method: "POST",
-                body: JSON.stringify(body),
-                headers: { "Content-Type": "application/json" },
-              });
-              const data = await response.json();
-              console.log(data);
+
+              if (fcm !== "")
+                await admin
+                  .messaging()
+                  .sendMulticast(message)
+                  .then((response) => {
+                    console.log("Successfully sent message");
+                  })
+                  .catch((error) => {
+                    console.log("Error sending message:", error);
+                  });
             } catch (e) {
               cabin.error(e);
             }

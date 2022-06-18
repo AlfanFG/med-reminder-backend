@@ -56,18 +56,7 @@ if (parentPort)
                 cabin.err(e);
               });
           }
-          console.log(
-            "==========================================================="
-          );
-          console.log(
-            "time now",
-            moment(new Date()).tz("asia/jakarta").format("HH:mm")
-          );
-          console.log(
-            "reminder time",
-            moment(item.time, "HH:mm").tz("asia/jakarta").format("HH:mm")
-          );
-          console.log("time in db", item.time);
+
           console.log(
             "==========================================================="
           );
@@ -87,13 +76,19 @@ if (parentPort)
               const number = user.phone_number;
               const message = "noreply message";
               const body = { number: number, message: message };
-              const response = await fetch("http://34.101.83.49/send-message", {
+              await fetch(`${API_PROD}/send-message`, {
                 method: "post",
                 body: JSON.stringify(body),
                 headers: { "Content-Type": "application/json" },
-              });
+              })
+                .then((data) => {
+                  console.log("Message Sent!");
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
 
-              const data = await response.json();
+              // const data = await response.json();
             } catch (e) {
               cabin.error(e);
             }

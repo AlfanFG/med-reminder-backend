@@ -5,7 +5,7 @@ module.exports = (mongoose) => {
         type: String,
         required: false,
       },
-      medName: {
+      treatment: {
         type: String,
         required: false,
       },
@@ -40,11 +40,16 @@ module.exports = (mongoose) => {
             type: Number,
             required: false,
           },
+          medName: {
+            type: String,
+            required: false,
+          },
           isTaken: {
             type: Boolean,
             required: false,
+            default: false,
           },
-          reminderTimes: {
+          repeatedTimes: {
             type: Number,
             required: false,
             default: 0,
@@ -52,6 +57,7 @@ module.exports = (mongoose) => {
           isRepeated: {
             type: Boolean,
             required: false,
+            default: false,
           },
         },
       ],
