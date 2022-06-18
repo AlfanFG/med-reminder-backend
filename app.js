@@ -39,14 +39,18 @@ let transporter = nodeMailer.createTransport({
 });
 
 const emailTemplateSource = readFileSync(
-  resolve(__dirname, "./email_temp/medicines.hbs")
+  resolve(__dirname, "./email_temp/medicines.hbs"),
+  "utf8"
 );
 
 app.post("/send-email", (req, res) => {
   const { email, message, data } = req.body;
-  console.log(req.body);
+  let temp = "";
+  data.map((item) => {
+    temp.append(`<td>${item.takePill}</td>`);
+  });
   const emailHtml = handlebars.compile(emailTemplateSource)({
-    data: data,
+    data: temp,
     mesage: message,
   });
   transporter
