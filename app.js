@@ -9,6 +9,9 @@ const nodeMailer = require("nodemailer");
 const { Client, LocalAuth } = require("whatsapp-web.js");
 var qrcode = require("qrcode-terminal");
 const app = express();
+const handlebars = require("handlebars");
+const { readFileSync } = require("fs");
+const { resolve } = require("path");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -35,16 +38,24 @@ let transporter = nodeMailer.createTransport({
   },
 });
 
+const emailTemplateSource = readFileSync(
+  resolve(__dirname, "./email_temp/medicines.hbs"),
+  "utf8"
+);
+
 app.post("/send-email", (req, res) => {
-  const { email, message } = req.body;
+  const { email, message, data } = req.body;
   console.log(req.body);
+  const emailHtml = handlebars.compile(emailTemplateSource)({
+    data: data,
+  });
   transporter
     .sendMail({
       from: process.env.EMAIL, //SENDER
       to: email, //MULTIPLE RECEIVERS
       subject: "Hello", //EMAIL SUBJECT
       text: "This is a test email.", //EMAIL BODY IN TEXT FORMAT
-      html: "<b>This is a test email.</b>", //EMAIL BODY IN HTML FORMAT
+      html: emailHtml, //EMAIL BODY IN HTML FORMAT
     })
     .then((response) => {
       res.status(200).json({
@@ -129,18 +140,18 @@ const cabin = new Cabin({
 const bree = new Bree({
   logger: cabin,
   jobs: [
-    {
-      name: "substractDays",
-      interval: "1m",
-    },
+    // {
+    //   name: "substractDays",
+    //   interval: "1m",
+    // },
     // {
     //   name: "scheduledEmail",
     //   interval: "1m",
     // },
-    // {
-    //   name: "scheduledNotification",
-    //   interval: "1m",
-    // },
+    {
+      name: "scheduledNotification",
+      interval: "1m",
+    },
     // {
     //   name: "untakenMedicine",
     //   interval: "1m",
