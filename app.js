@@ -47,7 +47,7 @@ app.post("/send-email", (req, res) => {
   const { email, message, data } = req.body;
   let temp = "";
   data.map((item) => {
-    temp += `<td valign='middle' style='text-align:left; padding: 0 2.5em;'>${item.takePill}</td>`;
+    temp += `<td valign=middle style=text-align:left; padding: 0 2.5em;>${item.takePill}</td>`;
   });
   console.log(temp);
   const emailHtml = handlebars.compile(emailTemplateSource)({
