@@ -129,10 +129,10 @@ const cabin = new Cabin({
 const bree = new Bree({
   logger: cabin,
   jobs: [
-    // {
-    //   name: "substractDays",
-    //   interval: "1m",
-    // },
+    {
+      name: "substractDays",
+      interval: "1m",
+    },
     // {
     //   name: "scheduledEmail",
     //   interval: "1m",
