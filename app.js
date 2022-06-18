@@ -49,6 +49,7 @@ app.post("/send-email", (req, res) => {
   data.map((item) => {
     temp += `<td>${item.takePill}</td>`;
   });
+  console.log(temp);
   const emailHtml = handlebars.compile(emailTemplateSource)({
     data: temp,
     mesage: message,
