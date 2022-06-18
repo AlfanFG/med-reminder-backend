@@ -5,6 +5,7 @@ const Cabin = require("cabin");
 const Graceful = require("@ladjs/graceful");
 const { Signale } = require("signale");
 require("./utils/db");
+const nodeMailer = require("nodemailer");
 const { Client, LocalAuth } = require("whatsapp-web.js");
 var qrcode = require("qrcode-terminal");
 const app = express();
@@ -21,6 +22,42 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   res.send("Server is running...");
+});
+
+let transporter = nodeMailer.createTransport({
+  host: "smtp.gmail.com",
+  service: "gmail",
+  port: 465,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL, //REPLACE WITH YOUR EMAIL ADDRESS
+    pass: process.env.PASSWORD, //REPLACE WITH YOUR EMAIL PASSWORD
+  },
+});
+
+app.post("/send-email", (req, res) => {
+  const { email, message } = req.body;
+  console.log(req.body);
+  transporter
+    .sendMail({
+      from: process.env.EMAIL, //SENDER
+      to: email, //MULTIPLE RECEIVERS
+      subject: "Hello", //EMAIL SUBJECT
+      text: "This is a test email.", //EMAIL BODY IN TEXT FORMAT
+      html: "<b>This is a test email.</b>", //EMAIL BODY IN HTML FORMAT
+    })
+    .then((response) => {
+      res.status(200).json({
+        status: true,
+        response: "Succeed!",
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        status: false,
+        response: err,
+      });
+    });
 });
 
 // app.post("/send-message", (req, res) => {
@@ -92,18 +129,22 @@ const cabin = new Cabin({
 const bree = new Bree({
   logger: cabin,
   jobs: [
-    {
-      name: "substractDays",
-      interval: "1m",
-    },
-    {
-      name: "scheduledEmail",
-      interval: "1m",
-    },
-    {
-      name: "untakenMedicine",
-      interval: "5m",
-    },
+    // {
+    //   name: "substractDays",
+    //   interval: "1m",
+    // },
+    // {
+    //   name: "scheduledEmail",
+    //   interval: "1m",
+    // },
+    // {
+    //   name: "scheduledNotification",
+    //   interval: "1m",
+    // },
+    // {
+    //   name: "untakenMedicine",
+    //   interval: "1m",
+    // },
     // {
     //   name: "scheduledWhatsapp",
     //   interval: "1m",

@@ -5,3 +5,5 @@ env_variables:
   PASSWORD: "aethelwolf"
   EMAIL: "alfanfgifary18@if.unjani.ac.id"
   PORT: 8080
+  API_PROD: http://34.101.83.49
+  API_LOCAL: http://localhost:8080
