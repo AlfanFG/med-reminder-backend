@@ -101,13 +101,17 @@ let transporter = nodeMailer.createTransport({
                 name: user.name,
               };
 
-              const response = await fetch("http://localhost:8080/send-email", {
+              await fetch("http://localhost:8080/send-email", {
                 method: "POST",
                 body: JSON.stringify(body),
                 headers: { "Content-Type": "application/json" },
-              }).then((result) => {
-                console.log(result);
-              });
+              })
+                .then((result) => {
+                  console.log("Send Email Success!");
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
             } catch (e) {
               cabin.error(e);
             }
