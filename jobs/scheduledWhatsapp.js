@@ -76,7 +76,7 @@ if (parentPort)
               const number = user.phone_number;
               const message = "noreply message";
               const body = { number: number, message: message };
-              await fetch(`${API_PROD}/send-message`, {
+              await fetch(`${env.process.API_PROD}/send-message`, {
                 method: "post",
                 body: JSON.stringify(body),
                 headers: { "Content-Type": "application/json" },
