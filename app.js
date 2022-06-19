@@ -51,7 +51,7 @@ app.post("/send-email", (req, res) => {
     const time = moment(item.time).tz("asia/jakarta").format("HH:mm");
     temp += `<tr style="border-bottom: 1px solid rgba(0,0,0,.05);"><td valign='middle' style='text-align:left; padding: 0 2.5em;'>${item.medName}</td><td valign='middle' style='text-align:left; padding: 0 2.5em;'>${item.takePill}</td><td valign='middle' style='text-align:left; padding: 0 2.5em;'>${time}</td></tr>`;
   });
-  console.log(temp);
+  console.log(req.body);
   const emailHtml = handlebars.compile(emailTemplateSource)({
     data: temp,
     mesage: message,
