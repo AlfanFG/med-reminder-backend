@@ -127,17 +127,6 @@ client.on("message", (msg) => {
 
 client.initialize();
 
-Twilio;
-app.post("/sendWhatsapp", async (req, res) => {
-  let message = req.body.Body;
-  let senderID = req.body.From;
-
-  console.log(message);
-  console.log(senderID);
-  //Write a function to send message back to Whatsapp
-  await WA.sendMessage("Hello from the other side.", senderID);
-});
-
 require("./app/routes/post.routes")(app);
 require("./app/routes/jobScheduler.routes")(app);
 require("./app/routes/user.routes")(app);
