@@ -17,12 +17,12 @@ const moment = require("moment-timezone");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// const client = new Client({
-//   authStrategy: new LocalAuth(),
-//   puppeteer: {
-//     headless: true,
-//   },
-// });
+const client = new Client({
+  authStrategy: new LocalAuth(),
+  puppeteer: {
+    headless: true,
+  },
+});
 
 app.get("/", (req, res) => {
   res.send("Server is running...");
@@ -80,63 +80,63 @@ app.post("/send-email", (req, res) => {
     });
 });
 
-// app.post("/send-message", (req, res) => {
-//   const number = req.body.number;
-//   const message = req.body.message;
-//   client
-//     .sendMessage(number, message)
-//     .then((response) => {
-//       res.status(200).json({
-//         status: true,
-//         response: response,
-//       });
-//     })
-//     .catch((err) => {
-//       res.status(500).json({
-//         status: false,
-//         response: err,
-//       });
-//     });
-// });
+app.post("/send-message", (req, res) => {
+  const number = req.body.number;
+  const message = req.body.message;
+  client
+    .sendMessage(number, message)
+    .then((response) => {
+      res.status(200).json({
+        status: true,
+        response: response,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        status: false,
+        response: err,
+      });
+    });
+});
 
-// client.on("qr", (qr) => {
-//   // Generate and scan this code with your phone
-//   console.log("QR RECEIVED", qr);
-//   qrcode.generate(qr, { small: true });
-// });
+client.on("qr", (qr) => {
+  // Generate and scan this code with your phone
+  console.log("QR RECEIVED", qr);
+  qrcode.generate(qr, { small: true });
+});
 
-// client.on("authenticated", () => {
-//   console.log("AUTHENTICATED");
-// });
+client.on("authenticated", () => {
+  console.log("AUTHENTICATED");
+});
 
-// client.on("auth_failure", (msg) => {
-//   // Fired if session restore was unsuccessful
-//   console.error("AUTHENTICATION FAILURE", msg);
-// });
+client.on("auth_failure", (msg) => {
+  // Fired if session restore was unsuccessful
+  console.error("AUTHENTICATION FAILURE", msg);
+});
 
-// client.on("ready", () => {
-//   console.log("Client is ready!");
-// });
+client.on("ready", () => {
+  console.log("Client is ready!");
+});
 
-// client.on("message", (msg) => {
-//   if (msg.body == "!ping") {
-//     console.log(msg.body);
-//     msg.reply("pong");
-//   }
-// });
+client.on("message", (msg) => {
+  if (msg.body == "!ping") {
+    console.log(msg.body);
+    msg.reply("pong");
+  }
+});
 
-// client.initialize();
+client.initialize();
 
-//Twilio
-// app.post("/sendWhatsapp", async (req, res) => {
-//   let message = req.body.Body;
-//   let senderID = req.body.From;
+Twilio;
+app.post("/sendWhatsapp", async (req, res) => {
+  let message = req.body.Body;
+  let senderID = req.body.From;
 
-//   console.log(message);
-//   console.log(senderID);
-//   //Write a function to send message back to Whatsapp
-//   await WA.sendMessage("Hello from the other side.", senderID);
-// });
+  console.log(message);
+  console.log(senderID);
+  //Write a function to send message back to Whatsapp
+  await WA.sendMessage("Hello from the other side.", senderID);
+});
 
 require("./app/routes/post.routes")(app);
 require("./app/routes/jobScheduler.routes")(app);
@@ -153,10 +153,10 @@ const bree = new Bree({
       name: "substractDays",
       interval: "1m",
     },
-    {
-      name: "scheduledEmail",
-      interval: "1m",
-    },
+    // {
+    //   name: "scheduledEmail",
+    //   interval: "1m",
+    // },
     {
       name: "scheduledNotification",
       interval: "1m",
