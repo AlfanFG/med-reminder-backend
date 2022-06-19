@@ -153,14 +153,14 @@ const bree = new Bree({
     //   name: "substractDays",
     //   interval: "1m",
     // },
-    // {
-    //   name: "scheduledEmail",
-    //   interval: "1m",
-    // },
     {
-      name: "scheduledNotification",
+      name: "scheduledEmail",
       interval: "1m",
     },
+    // {
+    //   name: "scheduledNotification",
+    //   interval: "1m",
+    // },
     // {
     //   name: "untakenMedicine",
     //   interval: "1m",
