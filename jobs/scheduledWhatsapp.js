@@ -75,7 +75,7 @@ if (parentPort)
               const number = user.phone_number;
               const message = "noreply message";
               const body = { number: number, message: message };
-              const url = new URL("/send-message", process.env.API_PROD);
+              // const url = new URL("/send-message", process.env.API_PROD);
               await fetch("http://34.101.83.49/send-message", {
                 method: "post",
                 body: JSON.stringify(body),

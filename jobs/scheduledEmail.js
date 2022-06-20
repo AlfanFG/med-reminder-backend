@@ -99,7 +99,7 @@ let transporter = nodeMailer.createTransport({
                 data: job.schedule,
                 name: user.name,
               };
-              const url = new URL("/send-email", process.env.API_PROD);
+              // const url = new URL("/send-email", process.env.API_PROD);
               await fetch("http://34.101.83.49/send-email", {
                 method: "POST",
                 body: JSON.stringify(body),

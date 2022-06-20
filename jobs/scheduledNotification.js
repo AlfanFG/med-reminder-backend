@@ -99,7 +99,7 @@ const pushNotificationOne = (data, token) => {};
                 fcm: fcm,
                 item: item,
               };
-              const url = new URL("/send-notification", process.env.API_PROD);
+              // const url = new URL("/send-notification", process.env.API_PROD);
               await fetch("http://34.101.83.49/send-notification", {
                 method: "POST",
                 body: JSON.stringify(body),
