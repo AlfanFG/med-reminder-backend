@@ -57,17 +57,16 @@ if (parentPort)
               });
           }
 
-          console.log(
-            "==========================================================="
-          );
+          // console.log(
+          //   "==========================================================="
+          // );
           if (
             moment(new Date(), "HH:mm").tz("asia/jakarta").format("HH:mm") !==
               moment(item.time, "HH:mm").tz("asia/jakarta").format("HH:mm") &&
             isExecuted
           ) {
-            console.log("It is not time yet to send whatsapp");
+            // console.log("It is not time yet to send whatsapp");
             // console.log(moment(new Date()).format("YYYY-MM-DD HH:mm"));
-
             // return;
           } else {
             try {
@@ -76,11 +75,14 @@ if (parentPort)
               const number = user.phone_number;
               const message = "noreply message";
               const body = { number: number, message: message };
-              await fetch(`${process.env.API_PROD}/send-message`, {
-                method: "post",
-                body: JSON.stringify(body),
-                headers: { "Content-Type": "application/json" },
-              })
+              const response = await fetch(
+                `${process.env.API_PROD}/send-message`,
+                {
+                  method: "post",
+                  body: JSON.stringify(body),
+                  headers: { "Content-Type": "application/json" },
+                }
+              )
                 .then((data) => {
                   console.log("Message Sent!");
                 })

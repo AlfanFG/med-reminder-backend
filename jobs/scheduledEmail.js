@@ -107,9 +107,13 @@ let transporter = nodeMailer.createTransport({
                   body: JSON.stringify(body),
                   headers: { "Content-Type": "application/json" },
                 }
-              );
-              const data = response.json();
-              console.log(data);
+              )
+                .then((result) => {
+                  console.log("Send Email Success!");
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
             } catch (e) {
               cabin.error(e);
             }
