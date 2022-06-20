@@ -88,12 +88,12 @@ let transporter = nodeMailer.createTransport({
             delay = 45;
           }
           const isFifteenMin = timeNow.diff(intakeTime, "minutes") >= delay;
-          console.log(
-            `time now = ${timeNow.minutes()} | intake time = ${intakeTime.minutes()} | ${isFifteenMin}`
-          );
+          // console.log(
+          //   `time now = ${timeNow.minutes()} | intake time = ${intakeTime.minutes()} | ${isFifteenMin}`
+          // );
 
-          console.log(item);
-          console.log(isFifteenMin && !isTaken && repeatedTimes <= 3);
+          // console.log(item);
+          // console.log(isFifteenMin && !isTaken && repeatedTimes <= 3);
           if (timeNow > intakeTime) {
             if (isFifteenMin && !isTaken && repeatedTimes < 3) {
               //   //Email configuration
@@ -136,7 +136,6 @@ let transporter = nodeMailer.createTransport({
                 .catch((err) => {
                   console.log(err);
                 });
-              console.log("item id : ", item._id);
 
               await jobScheduler
                 .findOneAndUpdate(
@@ -150,7 +149,7 @@ let transporter = nodeMailer.createTransport({
                   { new: true }
                 )
                 .then((data) => {
-                  console.log(data);
+                  console.log("update repeated times success!");
                 })
                 .catch((e) => {
                   cabin.err(e);
