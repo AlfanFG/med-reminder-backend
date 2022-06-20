@@ -124,10 +124,10 @@ app.post("/send-notification", (req, res) => {
       .messaging()
       .sendMulticast(message)
       .then((response) => {
-        console.log("Successfully sent message");
+        res.send({ code: 200, message: "Success!" });
       })
       .catch((error) => {
-        console.log("Error sending message:", error);
+        res.send({ code: 400, message: "Error", err: error });
       });
 });
 
