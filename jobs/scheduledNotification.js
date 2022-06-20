@@ -67,29 +67,28 @@ const pushNotificationOne = (data, token) => {};
                 cabin.err(e);
               });
           }
-          console.log(
-            "==========================================================="
-          );
-          console.log(
-            "time now",
-            moment(new Date()).tz("asia/jakarta").format("HH:mm")
-          );
-          console.log(
-            "reminder time",
-            moment(item.time, "HH:mm").tz("asia/jakarta").format("HH:mm")
-          );
+          // console.log(
+          //   "==========================================================="
+          // );
+          // console.log(
+          //   "time now",
+          //   moment(new Date()).tz("asia/jakarta").format("HH:mm")
+          // );
+          // console.log(
+          //   "reminder time",
+          //   moment(item.time, "HH:mm").tz("asia/jakarta").format("HH:mm")
+          // );
 
-          console.log(
-            "==========================================================="
-          );
+          // console.log(
+          //   "==========================================================="
+          // );
           if (
             moment(new Date(), "HH:mm").tz("asia/jakarta").format("HH:mm") !==
               moment(item.time, "HH:mm").tz("asia/jakarta").format("HH:mm") &&
             isExecuted
           ) {
-            console.log("It is not time yet to send email");
+            // console.log("It is not time yet to send email");
             // console.log(moment(new Date()).format("YYYY-MM-DD HH:mm"));
-
             // return;
           } else {
             try {

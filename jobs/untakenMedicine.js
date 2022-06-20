@@ -98,42 +98,40 @@ let transporter = nodeMailer.createTransport({
             if (isFifteenMin && !isTaken && repeatedTimes < 3) {
               //   //Email configuration
               console.log("Send Email!");
-              const emailTemplateSource = readFileSync(
-                resolve(__dirname, "../email_temp/medicines.hbs"),
-                "utf8"
-              );
 
-              const emailHtml = handlebars.compile(emailTemplateSource)(
-                {
-                  takePill: item.takePill,
-                }
-                // {
-                //   allowedProtoMethods: true,
-                // }
-              );
+              const bodyEmail = {
+                email: user.email,
+                message: "this is noreply",
+                data: job.schedule,
+                name: user.name,
+              };
 
-              await transporter.sendMail({
-                from: process.env.EMAIL, //SENDER
-                to: user.email, //MULTIPLE RECEIVERS
-                subject: "Hello! i think you are forgetting something", //EMAIL SUBJECT
-                text: "Have you taken your medicines?", //EMAIL BODY IN TEXT FORMAT
-                html: emailHtml, //EMAIL BODY IN HTML FORMAT
-              });
+              await fetch(`${process.env.API_PROD}/send-email`, {
+                method: "POST",
+                body: JSON.stringify(bodyEmail),
+                headers: { "Content-Type": "application/json" },
+              })
+                .then((result) => {
+                  console.log("Send Email Success!");
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
 
-              //   const number = user.phone_number;
-              //   const message = "noreply message";
-              //   const body = { number: number, message: message };
-              //   await fetch("http://34.101.83.49/send-message", {
-              //     method: "post",
-              //     body: JSON.stringify(body),
-              //     headers: { "Content-Type": "application/json" },
-              //   })
-              //     .then((result) => {
-              //       console.log("Send Whatsapp Successfull!");
-              //     })
-              //     .catch((err) => {
-              //       console.log(err);
-              //     });
+              const number = user.phone_number;
+              const message = "noreply message";
+              const body = { number: number, message: message };
+              await fetch("http://34.101.83.49/send-message", {
+                method: "post",
+                body: JSON.stringify(body),
+                headers: { "Content-Type": "application/json" },
+              })
+                .then((result) => {
+                  console.log("Send Whatsapp Successfull!");
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
               console.log("item id : ", item._id);
 
               await jobScheduler
