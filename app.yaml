@@ -8,3 +8,4 @@ env_variables:
   NODE_ENV: "production"
   API_PROD: "http://34.101.83.49"
   API_LOCAL: "http://localhost:8080"
+  GOOGLE_APPLICATION_CREDENTIALS: "./utils/medreminder-2e833-c52e4e327412.json"
