@@ -105,8 +105,11 @@ let transporter = nodeMailer.createTransport({
                 data: job.schedule,
                 name: user.name,
               };
-              // const urlEmail = new URL("/send-email", process.env.API_PROD);
-              await fetch("http://34.101.83.49/send-email", {
+              const dev = process.env.NODE_ENV !== "production";
+              const server = dev
+                ? "http://localhost:8080"
+                : "http://34.101.83.49";
+              await fetch(`${dev}/send-email`, {
                 method: "POST",
                 body: JSON.stringify(bodyEmail),
                 headers: { "Content-Type": "application/json" },
@@ -121,8 +124,8 @@ let transporter = nodeMailer.createTransport({
               const number = user.phone_number;
               const message = "noreply message";
               const body = { number: number, message: message };
-              const urlWa = new URL("/send-message", process.env.API_PROD);
-              await fetch("http://34.101.83.49/send-message", {
+
+              await fetch(`${dev}/send-message`, {
                 method: "post",
                 body: JSON.stringify(body),
                 headers: { "Content-Type": "application/json" },

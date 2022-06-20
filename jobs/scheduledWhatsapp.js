@@ -75,8 +75,11 @@ if (parentPort)
               const number = user.phone_number;
               const message = "noreply message";
               const body = { number: number, message: message };
-              // const url = new URL("/send-message", process.env.API_PROD);
-              await fetch("http://34.101.83.49/send-message", {
+              const dev = process.env.NODE_ENV !== "production";
+              const server = dev
+                ? "http://localhost:8080"
+                : "http://34.101.83.49";
+              await fetch(`${dev}/send-message`, {
                 method: "post",
                 body: JSON.stringify(body),
                 headers: { "Content-Type": "application/json" },
