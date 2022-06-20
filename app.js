@@ -26,12 +26,12 @@ admin.initializeApp({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// const client = new Client({
-//   authStrategy: new LocalAuth(),
-//   puppeteer: {
-//     headless: true,
-//   },
-// });
+const client = new Client({
+  authStrategy: new LocalAuth(),
+  puppeteer: {
+    headless: true,
+  },
+});
 
 app.get("/", (req, res) => {
   res.send("Server is running...");
@@ -131,33 +131,33 @@ app.post("/send-notification", (req, res) => {
       });
 });
 
-// client.on("qr", (qr) => {
-//   // Generate and scan this code with your phone
-//   console.log("QR RECEIVED", qr);
-//   qrcode.generate(qr, { small: true });
-// });
+client.on("qr", (qr) => {
+  // Generate and scan this code with your phone
+  console.log("QR RECEIVED", qr);
+  qrcode.generate(qr, { small: true });
+});
 
-// client.on("authenticated", () => {
-//   console.log("AUTHENTICATED");
-// });
+client.on("authenticated", () => {
+  console.log("AUTHENTICATED");
+});
 
-// client.on("auth_failure", (msg) => {
-//   // Fired if session restore was unsuccessful
-//   console.error("AUTHENTICATION FAILURE", msg);
-// });
+client.on("auth_failure", (msg) => {
+  // Fired if session restore was unsuccessful
+  console.error("AUTHENTICATION FAILURE", msg);
+});
 
-// client.on("ready", () => {
-//   console.log("Client is ready!");
-// });
+client.on("ready", () => {
+  console.log("Client is ready!");
+});
 
-// client.on("message", (msg) => {
-//   if (msg.body == "!ping") {
-//     console.log(msg.body);
-//     msg.reply("pong");
-//   }
-// });
+client.on("message", (msg) => {
+  if (msg.body == "!ping") {
+    console.log(msg.body);
+    msg.reply("pong");
+  }
+});
 
-// client.initialize();
+client.initialize();
 
 require("./app/routes/post.routes")(app);
 require("./app/routes/jobScheduler.routes")(app);
