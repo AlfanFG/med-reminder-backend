@@ -99,7 +99,8 @@ const pushNotificationOne = (data, token) => {};
                 fcm: fcm,
                 item: item,
               };
-              await fetch(`${process.env.API_PROD}/send-notification`, {
+              const url = new URL("/send-notification", process.env.API_PROD);
+              await fetch(url, {
                 method: "POST",
                 body: JSON.stringify(body),
                 headers: { "Content-Type": "application/json" },

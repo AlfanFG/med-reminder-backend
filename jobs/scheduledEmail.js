@@ -99,15 +99,12 @@ let transporter = nodeMailer.createTransport({
                 data: job.schedule,
                 name: user.name,
               };
-
-              const response = await fetch(
-                `${process.env.API_PROD}/send-email`,
-                {
-                  method: "POST",
-                  body: JSON.stringify(body),
-                  headers: { "Content-Type": "application/json" },
-                }
-              )
+              const url = new URL("/send-email", process.env.API_PROD);
+              await fetch(url, {
+                method: "POST",
+                body: JSON.stringify(body),
+                headers: { "Content-Type": "application/json" },
+              })
                 .then((result) => {
                   console.log("Send Email Success!");
                 })
