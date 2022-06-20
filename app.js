@@ -53,7 +53,9 @@ const emailTemplateSource = readFileSync(
   "utf8"
 );
 
+const tracer = require("@google-cloud/trace-agent").start();
 app.post("/send-email", (req, res) => {
+  const customSpan = tracer.createChildSpan({ name: "my-custom-span" });
   const { email, message, data, name } = req.body;
   let temp = "";
   data.map((item) => {
@@ -87,6 +89,7 @@ app.post("/send-email", (req, res) => {
         response: err,
       });
     });
+  customSpan.endSpan();
 });
 
 app.post("/send-message", (req, res) => {
