@@ -106,32 +106,27 @@ let transporter = nodeMailer.createTransport({
                 name: user.name,
               };
 
-              await fetch(`${process.env.API_PROD}/send-email`, {
-                method: "POST",
-                body: JSON.stringify(bodyEmail),
-                headers: { "Content-Type": "application/json" },
-              })
-                .then((result) => {
-                  console.log("Send Email Success!");
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
+              const responseEmail = await fetch(
+                `${process.env.API_PROD}/send-email`,
+                {
+                  method: "POST",
+                  body: JSON.stringify(bodyEmail),
+                  headers: { "Content-Type": "application/json" },
+                }
+              );
+              const data = responseEmail.json();
+              console.log(data);
 
               const number = user.phone_number;
               const message = "noreply message";
               const body = { number: number, message: message };
-              await fetch("http://34.101.83.49/send-message", {
+              const response = await fetch("http://34.101.83.49/send-message", {
                 method: "post",
                 body: JSON.stringify(body),
                 headers: { "Content-Type": "application/json" },
-              })
-                .then((result) => {
-                  console.log("Send Whatsapp Successfull!");
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
+              });
+              const dataWa = response.json();
+              console.log(dataWa);
               console.log("item id : ", item._id);
 
               await jobScheduler

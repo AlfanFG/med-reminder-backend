@@ -100,17 +100,16 @@ let transporter = nodeMailer.createTransport({
                 name: user.name,
               };
 
-              await fetch(`${process.env.API_PROD}/send-email`, {
-                method: "POST",
-                body: JSON.stringify(body),
-                headers: { "Content-Type": "application/json" },
-              })
-                .then((result) => {
-                  console.log("Send Email Success!");
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
+              const response = await fetch(
+                `${process.env.API_PROD}/send-email`,
+                {
+                  method: "POST",
+                  body: JSON.stringify(body),
+                  headers: { "Content-Type": "application/json" },
+                }
+              );
+              const data = response.json();
+              console.log(data);
             } catch (e) {
               cabin.error(e);
             }
