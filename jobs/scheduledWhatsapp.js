@@ -79,7 +79,7 @@ if (parentPort)
               const server = dev
                 ? "http://localhost:8080"
                 : "http://34.101.83.49";
-              await fetch(`${dev}/send-message`, {
+              await fetch(`${server}/send-message`, {
                 method: "post",
                 body: JSON.stringify(body),
                 headers: { "Content-Type": "application/json" },

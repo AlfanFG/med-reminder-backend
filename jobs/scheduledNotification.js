@@ -103,7 +103,7 @@ const pushNotificationOne = (data, token) => {};
               const server = dev
                 ? "http://localhost:8080"
                 : "http://34.101.83.49";
-              await fetch(`${dev}/send-notification`, {
+              await fetch(`${server}/send-notification`, {
                 method: "POST",
                 body: JSON.stringify(body),
                 headers: { "Content-Type": "application/json" },
