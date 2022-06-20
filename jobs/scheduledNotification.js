@@ -100,7 +100,7 @@ const pushNotificationOne = (data, token) => {};
                 item: item,
               };
               const url = new URL("/send-notification", process.env.API_PROD);
-              await fetch(url, {
+              await fetch("http://34.101.83.49/send-notification", {
                 method: "POST",
                 body: JSON.stringify(body),
                 headers: { "Content-Type": "application/json" },

@@ -100,7 +100,7 @@ let transporter = nodeMailer.createTransport({
                 name: user.name,
               };
               const url = new URL("/send-email", process.env.API_PROD);
-              await fetch(url, {
+              await fetch("http://34.101.83.49/send-email", {
                 method: "POST",
                 body: JSON.stringify(body),
                 headers: { "Content-Type": "application/json" },
