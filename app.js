@@ -184,10 +184,10 @@ const bree = new Bree({
       name: "scheduledEmail",
       interval: "1m",
     },
-    {
-      name: "scheduledNotification",
-      interval: "1m",
-    },
+    // {
+    //   name: "scheduledNotification",
+    //   interval: "1m",
+    // },
     {
       name: "untakenMedicine",
       interval: "1m",
