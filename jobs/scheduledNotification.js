@@ -96,25 +96,40 @@ const pushNotificationOne = (data, token) => {};
               console.log("Send Notification!");
 
               const fcm = user.fcm ? user.fcm : "";
-              const message = {
-                tokens: [fcm],
-                notification: {
-                  title: "Take your medicine!",
-                  body: "Tap this for detail",
-                },
-                data: { data: JSON.stringify(item) },
+              const body = {
+                fcm: fcm,
+                item: item,
               };
+              await fetch(`${process.env.API_PROD}/send-notification`, {
+                method: "POST",
+                body: JSON.stringify(body),
+                headers: { "Content-Type": "application/json" },
+              })
+                .then((data) => {
+                  console.log("Message Sent!");
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+              // const message = {
+              //   tokens: [fcm],
+              //   notification: {
+              //     title: "Take your medicine!",
+              //     body: "Tap this for detail",
+              //   },
+              //   data: { data: JSON.stringify(item) },
+              // };
 
-              if (fcm !== "")
-                await admin
-                  .messaging()
-                  .sendMulticast(message)
-                  .then((response) => {
-                    console.log("Successfully sent message");
-                  })
-                  .catch((error) => {
-                    console.log("Error sending message:", error);
-                  });
+              // if (fcm !== "")
+              //   await admin
+              //     .messaging()
+              //     .sendMulticast(message)
+              //     .then((response) => {
+              //       console.log("Successfully sent message");
+              //     })
+              //     .catch((error) => {
+              //       console.log("Error sending message:", error);
+              //     });
             } catch (e) {
               cabin.error(e);
             }

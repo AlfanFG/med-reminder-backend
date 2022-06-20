@@ -13,16 +13,25 @@ const handlebars = require("handlebars");
 const { readFileSync } = require("fs");
 const { resolve } = require("path");
 const moment = require("moment-timezone");
+const { ServiceAccount } = require("firebase-admin");
+const serviceAccount = require("./utils/fcm_credentials.json");
+const admin = require("firebase-admin");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL:
+    "https://medreminder-2e833-default-rtdb.asia-southeast1.firebasedatabase.app",
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const client = new Client({
-  authStrategy: new LocalAuth(),
-  puppeteer: {
-    headless: true,
-  },
-});
+// const client = new Client({
+//   authStrategy: new LocalAuth(),
+//   puppeteer: {
+//     headless: true,
+//   },
+// });
 
 app.get("/", (req, res) => {
   res.send("Server is running...");
@@ -98,34 +107,57 @@ app.post("/send-message", (req, res) => {
       });
     });
 });
+app.post("/send-notification", (req, res) => {
+  const { fcm, item } = req.body;
 
-client.on("qr", (qr) => {
-  // Generate and scan this code with your phone
-  console.log("QR RECEIVED", qr);
-  qrcode.generate(qr, { small: true });
+  const message = {
+    tokens: [fcm],
+    notification: {
+      title: "Take your medicine!",
+      body: "Tap this for detail",
+    },
+    data: { data: JSON.stringify(item) },
+  };
+
+  if (fcm !== "")
+    admin
+      .messaging()
+      .sendMulticast(message)
+      .then((response) => {
+        console.log("Successfully sent message");
+      })
+      .catch((error) => {
+        console.log("Error sending message:", error);
+      });
 });
 
-client.on("authenticated", () => {
-  console.log("AUTHENTICATED");
-});
+// client.on("qr", (qr) => {
+//   // Generate and scan this code with your phone
+//   console.log("QR RECEIVED", qr);
+//   qrcode.generate(qr, { small: true });
+// });
 
-client.on("auth_failure", (msg) => {
-  // Fired if session restore was unsuccessful
-  console.error("AUTHENTICATION FAILURE", msg);
-});
+// client.on("authenticated", () => {
+//   console.log("AUTHENTICATED");
+// });
 
-client.on("ready", () => {
-  console.log("Client is ready!");
-});
+// client.on("auth_failure", (msg) => {
+//   // Fired if session restore was unsuccessful
+//   console.error("AUTHENTICATION FAILURE", msg);
+// });
 
-client.on("message", (msg) => {
-  if (msg.body == "!ping") {
-    console.log(msg.body);
-    msg.reply("pong");
-  }
-});
+// client.on("ready", () => {
+//   console.log("Client is ready!");
+// });
 
-client.initialize();
+// client.on("message", (msg) => {
+//   if (msg.body == "!ping") {
+//     console.log(msg.body);
+//     msg.reply("pong");
+//   }
+// });
+
+// client.initialize();
 
 require("./app/routes/post.routes")(app);
 require("./app/routes/jobScheduler.routes")(app);
@@ -150,14 +182,14 @@ const bree = new Bree({
       name: "scheduledNotification",
       interval: "1m",
     },
-    {
-      name: "untakenMedicine",
-      interval: "1m",
-    },
-    {
-      name: "scheduledWhatsapp",
-      interval: "1m",
-    },
+    // {
+    //   name: "untakenMedicine",
+    //   interval: "1m",
+    // },
+    // {
+    //   name: "scheduledWhatsapp",
+    //   interval: "1m",
+    // },
   ],
 });
 
