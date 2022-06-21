@@ -39,6 +39,7 @@ app.get("/", async (req, res) => {
   // This outgoing HTTP request should be captured by Trace
   try {
     const { body } = await got(DISCOVERY_URL, { responseType: "json" });
+    console.log(body);
     const names = body.items.map((item) => item.name);
     res.status(200).send(names.join("\n")).end();
   } catch (err) {
