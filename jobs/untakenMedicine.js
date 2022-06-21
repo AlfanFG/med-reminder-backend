@@ -108,7 +108,7 @@ let transporter = nodeMailer.createTransport({
               const dev = process.env.NODE_ENV !== "production";
               const server = dev
                 ? "http://localhost:8080"
-                : "http://34.101.83.49";
+                : "http://34.128.119.246";
               await fetch(`${server}/send-email`, {
                 method: "POST",
                 body: JSON.stringify(bodyEmail),
@@ -125,7 +125,7 @@ let transporter = nodeMailer.createTransport({
               const message = "noreply message";
               const body = { number: number, message: message };
 
-              await fetch(`${dev}/send-message`, {
+              await fetch(`${server}/send-message`, {
                 method: "post",
                 body: JSON.stringify(body),
                 headers: { "Content-Type": "application/json" },
