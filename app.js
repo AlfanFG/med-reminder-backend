@@ -16,9 +16,7 @@ const moment = require("moment-timezone");
 const { ServiceAccount } = require("firebase-admin");
 const serviceAccount = require("./utils/fcm_credentials.json");
 const admin = require("firebase-admin");
-const opentelemetry = require("@opentelemetry/api");
-const { NodeTracerProvider } = require("@opentelemetry/sdk-trace-node");
-const provider = new NodeTracerProvider();
+require("@google-cloud/trace-agent").start();
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -42,18 +40,6 @@ opentelemetry.trace.setGlobalTracerProvider(provider);
 const tracer = opentelemetry.trace.getTracer("basic");
 
 app.get("/", (req, res) => {
-  // Create a span.
-  const span = tracer.startSpan("foo");
-
-  // Set attributes to the span.
-  span.setAttribute("key", "value");
-
-  // Annotate our span to capture metadata about our operation
-  span.addEvent("invoking work");
-
-  for (let i = 0; i <= Math.floor(Math.random() * 40000000); i += 1) {}
-  // Be sure to end the span.
-  span.end();
   res.send("Server is running...");
 });
 
