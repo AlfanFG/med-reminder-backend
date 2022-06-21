@@ -38,7 +38,10 @@ const client = new Client({
   },
 });
 const DISCOVERY_URL = "https://www.googleapis.com/discovery/v1/apis";
-const tracer = require("@google-cloud/trace-agent").start();
+const tracer = require("@google-cloud/trace-agent").start({
+  projectId: "medreminder-2e833",
+  keyFilename: "./utils/medreminder-2e833-c52e4e327412.json",
+});
 app.get("/", async (req, res) => {
   // This outgoing HTTP request should be captured by Trace
   try {
