@@ -16,10 +16,8 @@ const moment = require("moment-timezone");
 const { ServiceAccount } = require("firebase-admin");
 const serviceAccount = require("./utils/fcm_credentials.json");
 const admin = require("firebase-admin");
-// const { NodeTracerProvider } = require("@opentelemetry/sdk-trace-node");
-// const provider = new NodeTracerProvider();
-const { setupTracing } = require("./tracer.ts");
-setupTracing("example-express-server");
+const { NodeTracerProvider } = require("@opentelemetry/sdk-trace-node");
+const provider = new NodeTracerProvider();
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -37,7 +35,24 @@ const client = new Client({
   },
 });
 
+// Initialize the OpenTelemetry APIs to use the
+// NodeTracerProvider bindings
+opentelemetry.trace.setGlobalTracerProvider(provider);
+const tracer = opentelemetry.trace.getTracer("basic");
+
 app.get("/", (req, res) => {
+  // Create a span.
+  const span = tracer.startSpan("foo");
+
+  // Set attributes to the span.
+  span.setAttribute("key", "value");
+
+  // Annotate our span to capture metadata about our operation
+  span.addEvent("invoking work");
+
+  for (let i = 0; i <= Math.floor(Math.random() * 40000000); i += 1) {}
+  // Be sure to end the span.
+  span.end();
   res.send("Server is running...");
 });
 
@@ -57,9 +72,7 @@ const emailTemplateSource = readFileSync(
   "utf8"
 );
 
-const tracer = require("@google-cloud/trace-agent").start();
 app.post("/send-email", (req, res) => {
-  const customSpan = tracer.createChildSpan({ name: "my-custom-span" });
   const { email, message, data, name } = req.body;
   let temp = "";
   data.map((item) => {
@@ -93,7 +106,6 @@ app.post("/send-email", (req, res) => {
         response: err,
       });
     });
-  customSpan.endSpan();
 });
 
 app.post("/send-message", (req, res) => {
