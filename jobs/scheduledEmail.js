@@ -102,7 +102,7 @@ let transporter = nodeMailer.createTransport({
               const dev = process.env.NODE_ENV !== "production";
               const server = dev
                 ? "http://localhost:8080"
-                : "http://34.128.119.246";
+                : "http://34.101.83.49";
               await fetch(`${server}/send-email`, {
                 method: "POST",
                 body: JSON.stringify(body),
