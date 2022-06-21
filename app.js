@@ -16,6 +16,7 @@ const moment = require("moment-timezone");
 const { ServiceAccount } = require("firebase-admin");
 const serviceAccount = require("./utils/fcm_credentials.json");
 const admin = require("firebase-admin");
+const got = require("got");
 require("@google-cloud/trace-agent").start();
 
 admin.initializeApp({
@@ -34,9 +35,18 @@ const client = new Client({
   },
 });
 
-app.get("/", (req, res) => {
-  res.send("Server is running...");
+app.get("/", async (req, res) => {
+  // This outgoing HTTP request should be captured by Trace
+  try {
+    const { body } = await got(DISCOVERY_URL, { responseType: "json" });
+    const names = body.items.map((item) => item.name);
+    res.status(200).send(names.join("\n")).end();
+  } catch (err) {
+    console.error(err);
+    res.status(500).end();
+  }
 });
+// res.send("Server is running...");
 
 let transporter = nodeMailer.createTransport({
   host: "smtp.gmail.com",
