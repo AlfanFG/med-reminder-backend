@@ -78,7 +78,7 @@ if (parentPort)
               const dev = process.env.NODE_ENV !== "production";
               const server = dev
                 ? "http://localhost:8080"
-                : "http://34.101.83.49";
+                : "http://34.128.119.246";
               await fetch(`${server}/send-message`, {
                 method: "post",
                 body: JSON.stringify(body),

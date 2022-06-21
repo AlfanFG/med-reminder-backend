@@ -98,7 +98,6 @@ app.post("/send-email", (req, res) => {
       html: emailHtml, //EMAIL BODY IN HTML FORMAT
     })
     .then((response) => {
-      customSpan.endSpan();
       res.status(200).json({
         status: true,
         response: "Succeed!",
@@ -110,6 +109,7 @@ app.post("/send-email", (req, res) => {
         response: err,
       });
     });
+  customSpan.endSpan();
 });
 
 app.post("/send-message", (req, res) => {
