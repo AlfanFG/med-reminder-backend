@@ -38,7 +38,7 @@ const client = new Client({
   },
 });
 const DISCOVERY_URL = "https://www.googleapis.com/discovery/v1/apis";
-
+const tracer = require("@google-cloud/trace-agent").start();
 app.get("/", async (req, res) => {
   // This outgoing HTTP request should be captured by Trace
   try {
