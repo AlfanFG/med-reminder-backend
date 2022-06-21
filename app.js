@@ -17,7 +17,10 @@ const { ServiceAccount } = require("firebase-admin");
 const serviceAccount = require("./utils/fcm_credentials.json");
 const admin = require("firebase-admin");
 const got = require("got");
-require("@google-cloud/trace-agent").start();
+require("@google-cloud/trace-agent").start({
+  projectId: "medreminder-2e833",
+  keyFilename: "./utils/medreminder-2e833-c52e4e327412.json",
+});
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
