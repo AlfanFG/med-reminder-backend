@@ -34,11 +34,6 @@ const client = new Client({
   },
 });
 
-// Initialize the OpenTelemetry APIs to use the
-// NodeTracerProvider bindings
-opentelemetry.trace.setGlobalTracerProvider(provider);
-const tracer = opentelemetry.trace.getTracer("basic");
-
 app.get("/", (req, res) => {
   res.send("Server is running...");
 });
