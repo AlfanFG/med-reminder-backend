@@ -16,6 +16,7 @@ const moment = require("moment-timezone");
 const { ServiceAccount } = require("firebase-admin");
 const serviceAccount = require("./utils/fcm_credentials.json");
 const admin = require("firebase-admin");
+const opentelemetry = require("@opentelemetry/api");
 const { NodeTracerProvider } = require("@opentelemetry/sdk-trace-node");
 const provider = new NodeTracerProvider();
 
