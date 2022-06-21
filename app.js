@@ -34,7 +34,7 @@ const client = new Client({
     headless: true,
   },
 });
-
+const DISCOVERY_URL = "https://www.googleapis.com/discovery/v1/apis";
 app.get("/", async (req, res) => {
   // This outgoing HTTP request should be captured by Trace
   try {
