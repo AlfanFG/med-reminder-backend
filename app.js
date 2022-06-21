@@ -38,18 +38,18 @@ const client = new Client({
   },
 });
 const DISCOVERY_URL = "https://www.googleapis.com/discovery/v1/apis";
-require("@google-cloud/trace-agent").start({
+const tracer = require("@google-cloud/trace-agent").start({
   projectId: "medreminder-2e833",
   keyFilename: "./utils/medreminder-2e833-c52e4e327412.json",
 });
 app.get("/", async (req, res) => {
   // This outgoing HTTP request should be captured by Trace
   try {
-    // const customSpan = tracer.createChildSpan({ name: "my-custom-span" });
+    const customSpan = tracer.createChildSpan({ name: "exp" });
     const { body } = await got(DISCOVERY_URL, { responseType: "json" });
     // console.log(body);
     // const names = body.items.map((item) => {return [item.name]});
-    // customSpan.endSpan();
+    customSpan.endSpan();
     res.status(200).send({ data: body }).end();
   } catch (err) {
     console.error(err);
@@ -75,13 +75,14 @@ const emailTemplateSource = readFileSync(
 );
 
 app.post("/send-email", (req, res) => {
+  const customSpan = tracer.createChildSpan({ name: "send-email" });
   const { email, message, data, name } = req.body;
   let temp = "";
   data.map((item) => {
     const time = moment(item.time).tz("asia/jakarta").format("HH:mm");
     temp += `<tr style="border-bottom: 1px solid rgba(0,0,0,.05);"><td valign='middle' style='text-align:left; padding: 0 2.5em;'>${item.medName}</td><td valign='middle' style='text-align:left; padding: 0 2.5em;'>${item.takePill}</td><td valign='middle' style='text-align:left; padding: 0 2.5em;'>${time}</td></tr>`;
   });
-  console.log(req.body);
+
   const emailHtml = handlebars.compile(emailTemplateSource)({
     data: temp,
     mesage: message,
@@ -108,6 +109,7 @@ app.post("/send-email", (req, res) => {
         response: err,
       });
     });
+  customSpan.endSpan();
 });
 
 app.post("/send-message", (req, res) => {
