@@ -92,7 +92,7 @@ const pushNotificationOne = (data, token) => {};
             // return;
           } else {
             try {
-              console.log("Send Notification!");
+              // console.log("Send Notification!");
 
               const fcm = user.fcm ? user.fcm : "";
               const body = {
@@ -109,7 +109,7 @@ const pushNotificationOne = (data, token) => {};
                 headers: { "Content-Type": "application/json" },
               })
                 .then((data) => {
-                  console.log("Message Sent!");
+                  // console.log("Message Sent!");
                 })
                 .catch((err) => {
                   console.log(err);

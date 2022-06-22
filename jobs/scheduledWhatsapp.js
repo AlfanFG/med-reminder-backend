@@ -71,7 +71,7 @@ if (parentPort)
           } else {
             try {
               //Email configuration
-              console.log("send whatsapp!");
+              // console.log("send whatsapp!");
               const number = user.phone_number;
               const message = "noreply message";
               const body = { number: number, message: message };
@@ -85,7 +85,7 @@ if (parentPort)
                 headers: { "Content-Type": "application/json" },
               })
                 .then((data) => {
-                  console.log("Message Sent!");
+                  // console.log("Message Sent!");
                 })
                 .catch((err) => {
                   console.log(err);

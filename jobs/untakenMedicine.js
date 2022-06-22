@@ -97,7 +97,7 @@ let transporter = nodeMailer.createTransport({
           if (timeNow > intakeTime) {
             if (isFifteenMin && !isTaken && repeatedTimes < 3) {
               //   //Email configuration
-              console.log("Send Email!");
+              // console.log("Send Email!");
 
               const bodyEmail = {
                 email: user.email,
@@ -115,7 +115,7 @@ let transporter = nodeMailer.createTransport({
                 headers: { "Content-Type": "application/json" },
               })
                 .then((result) => {
-                  console.log("Send Email Success!");
+                  // console.log("Send Email Success!");
                 })
                 .catch((err) => {
                   console.log(err);

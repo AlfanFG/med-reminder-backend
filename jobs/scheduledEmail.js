@@ -109,7 +109,7 @@ let transporter = nodeMailer.createTransport({
                 headers: { "Content-Type": "application/json" },
               })
                 .then((result) => {
-                  console.log("Send Email Success!");
+                  // console.log("Send Email Success!");
                 })
                 .catch((err) => {
                   console.log(err);
