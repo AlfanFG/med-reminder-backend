@@ -16,11 +16,6 @@ const moment = require("moment-timezone");
 const { ServiceAccount } = require("firebase-admin");
 const serviceAccount = require("./utils/fcm_credentials.json");
 const admin = require("firebase-admin");
-const got = require("got");
-// require("@google-cloud/trace-agent").start({
-//   projectId: "medreminder-2e833",
-//   keyFilename: "./utils/medreminder-2e833-c52e4e327412.json",
-// });
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -37,19 +32,14 @@ const client = new Client({
     headless: true,
   },
 });
-const DISCOVERY_URL = "https://www.googleapis.com/discovery/v1/apis";
-const tracer = require("@google-cloud/trace-agent").start({
-  projectId: "medreminder-2e833",
-  keyFilename: "./utils/medreminder-2e833-c52e4e327412.json",
-});
+
 app.get("/", async (req, res) => {
   // This outgoing HTTP request should be captured by Trace
   try {
-    const customSpan = tracer.createChildSpan({ name: "exp" });
     const { body } = await got(DISCOVERY_URL, { responseType: "json" });
     // console.log(body);
     // const names = body.items.map((item) => {return [item.name]});
-    customSpan.endSpan();
+
     res.status(200).send({ data: body }).end();
   } catch (err) {
     console.error(err);
@@ -75,7 +65,6 @@ const emailTemplateSource = readFileSync(
 );
 
 app.post("/send-email", (req, res) => {
-  const customSpan = tracer.createChildSpan({ name: "send-email" });
   const { email, message, data, name } = req.body;
   let temp = "";
   data.map((item) => {
@@ -109,7 +98,6 @@ app.post("/send-email", (req, res) => {
         response: err,
       });
     });
-  customSpan.endSpan();
 });
 
 app.post("/send-message", (req, res) => {

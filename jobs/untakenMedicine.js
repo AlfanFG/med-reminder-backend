@@ -125,13 +125,29 @@ let transporter = nodeMailer.createTransport({
               const message = "noreply message";
               const body = { number: number, message: message };
 
-              await fetch(`${dev}/send-message`, {
+              await fetch(`${server}/send-message`, {
                 method: "post",
                 body: JSON.stringify(body),
                 headers: { "Content-Type": "application/json" },
               })
                 .then((result) => {
                   console.log("Send Whatsapp Successfull!");
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+              const fcm = user.fcm ? user.fcm : "";
+              const bodyNotif = {
+                fcm: fcm,
+                item: item,
+              };
+              await fetch(`${server}/send-notification`, {
+                method: "POST",
+                body: JSON.stringify(bodyNotif),
+                headers: { "Content-Type": "application/json" },
+              })
+                .then((data) => {
+                  // console.log("Message Sent!");
                 })
                 .catch((err) => {
                   console.log(err);
