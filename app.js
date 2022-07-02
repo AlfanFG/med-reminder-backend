@@ -36,17 +36,12 @@ const client = new Client({
 app.get("/", async (req, res) => {
   // This outgoing HTTP request should be captured by Trace
   try {
-    const { body } = await got(DISCOVERY_URL, { responseType: "json" });
-    // console.log(body);
-    // const names = body.items.map((item) => {return [item.name]});
-
-    res.status(200).send({ data: body }).end();
+    res.send("Server is running...");
   } catch (err) {
     console.error(err);
     res.status(500).end();
   }
 });
-// res.send("Server is running...");
 
 let transporter = nodeMailer.createTransport({
   host: "smtp.gmail.com",
@@ -199,10 +194,10 @@ const bree = new Bree({
       name: "scheduledNotification",
       interval: "1m",
     },
-    // {
-    //   name: "untakenMedicine",
-    //   interval: "1m",
-    // },
+    {
+      name: "untakenMedicine",
+      interval: "1m",
+    },
     {
       name: "scheduledWhatsapp",
       interval: "1m",
