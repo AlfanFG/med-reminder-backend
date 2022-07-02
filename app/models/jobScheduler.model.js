@@ -1,8 +1,10 @@
+const { Schema } = require("mongoose");
+
 module.exports = (mongoose) => {
   const schema = mongoose.Schema(
     {
       user_id: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: false,
       },
       treatment: {

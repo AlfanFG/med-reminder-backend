@@ -71,16 +71,20 @@ if (parentPort)
           } else {
             try {
               //Email configuration
-              // console.log("send whatsapp!");
+              console.log("send whatsapp!");
               const number = user.phone_number;
               let scheduleData = "";
               job.schedule.map((item, idx) => {
-                scheduleData += `${idx + 1}. ${item.medName}
-                `;
+                scheduleData += `${idx + 1}. ${
+                  item.medName
+                } with amount of pill ${item.takePill} take your medicine at ${
+                  item.time
+                }
+`;
               });
               const message = `Medicine Reminder 
-              Treatment : ${job.treatment}
-              Medicine Name : ${scheduleData}`;
+Treatment : ${job.treatment}
+Schedules : ${scheduleData}`;
               const body = { number: number, message: message };
               const dev = process.env.NODE_ENV !== "production";
               const server = dev
