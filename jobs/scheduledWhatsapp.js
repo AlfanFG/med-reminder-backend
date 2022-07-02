@@ -77,9 +77,11 @@ if (parentPort)
               job.schedule.map((item, idx) => {
                 scheduleData += `${idx + 1}. ${
                   item.medName
-                } with amount of pill ${item.takePill} take your medicine at ${
-                  item.time
-                }
+                } with amount of pill ${
+                  item.takePill
+                } take your medicine at ${moment(item.time, "HH:mm")
+                  .tz("asia/jakarta")
+                  .format("HH:mm")}
 `;
               });
               const message = `Medicine Reminder 
