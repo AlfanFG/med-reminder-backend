@@ -73,7 +73,14 @@ if (parentPort)
               //Email configuration
               // console.log("send whatsapp!");
               const number = user.phone_number;
-              const message = "noreply message";
+              let scheduleData = "";
+              job.schedule.map((item, idx) => {
+                scheduleData += `${idx + 1}. ${item.medName}
+                `;
+              });
+              const message = `Medicine Reminder 
+              Treatment : ${job.treatment}
+              Medicine Name : ${scheduleData}`;
               const body = { number: number, message: message };
               const dev = process.env.NODE_ENV !== "production";
               const server = dev
