@@ -38,7 +38,7 @@ if (parentPort)
           let isExecuted = job.executed;
           if (
             moment(job.startDate).tz("asia/jakarta").format("YYYY-MM-DD") ===
-              moment(item.time, "YYYY-MM-DD")
+              moment(new Date(), "YYYY-MM-DD")
                 .tz("asia/jakarta")
                 .format("YYYY-MM-DD") &&
             !isExecuted
