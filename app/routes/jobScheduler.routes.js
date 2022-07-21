@@ -35,7 +35,7 @@ module.exports = (app) => {
   router.get("/byId/:id", (req, res) => {
     const id = req.params.id;
     jobScheduler
-      .find({ _id: id })
+      .findOne({ _id: id })
       .then((result) => {
         res.send(result);
         console.log(result);
