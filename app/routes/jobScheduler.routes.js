@@ -62,12 +62,29 @@ module.exports = (app) => {
         });
       });
   });
+
   router.put("/disactive/:id", (req, res) => {
     const id = req.params.id;
     const data = req.body;
 
     jobScheduler
       .findOneAndUpdate({ _id: id }, { isActive: data.isActive })
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: err.message || "Some Error While retrieving data",
+        });
+      });
+  });
+
+  router.put("/:id", (req, res) => {
+    const id = req.params.id;
+    const data = req.body;
+
+    jobScheduler
+      .findOneAndUpdate({ _id: id }, { data })
       .then((result) => {
         res.send(result);
       })
